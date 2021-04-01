@@ -93,11 +93,12 @@ fs::FS &filesystem = FFat;     // Is necessary select the proper partition schem
 #include <AsyncTelegram.h>
 AsyncTelegram myBot;
 
-const char* ssid = "Reis";             // REPLACE mySSID WITH YOUR WIFI SSID
-const char* pass = "8447E21E95";          // REPLACE myPassword YOUR WIFI PASSWORD, IF ANY
-const char* token = "1470670995:AAF_bjCBQb4UpujWCMOLG0HjKLNcVWIRraI";     // REPLACE myToken WITH YOUR TELEGRAM BOT TOKEN
+const char* ssid = "00000";             // REPLACE mySSID WITH YOUR WIFI SSID
+const char* pass = "00000";          // REPLACE myPassword YOUR WIFI PASSWORD, IF ANY
+const char* token = "00000";     // REPLACE myToken WITH YOUR TELEGRAM BOT TOKEN
 int max_retry_count = 4;
-uint32_t chatID = 789512150;
+int counter = 0;
+uint32_t chatID = 00000;
 
 // Pin definition for CAMERA_MODEL_AI_THINKER
 #define PWDN_GPIO_NUM     32
@@ -375,7 +376,7 @@ void setup() {
 	String  message_rssi = String(averageRSSI);
 	myBot.sendMessage(msg, message_rssi);
 
-	// delay(1000);
+	delay(1000);
 
 	// Take picture and send it
 	String myFile = takePicture(filesystem);
@@ -389,7 +390,7 @@ void setup() {
 	}
 
 	// Set alarm to 10min from present time
-	// If present hour is 21h, 22h, 23h, 0h, 1h, 2h,3h, 4h or 5h, alarm should happen in 1 hour
+	// If present hour is 21h, 22h, 23h, 0h, 1h, 2h,3h, 4h or 5h, alarm is set 1 hour away
 	DateTime now = rtc.now();
 	// Serial.print("rtc time: "); Serial.print(now.hour(), DEC); Serial.print(" : "); Serial.println(now.minute(), DEC);
 	bool night_time = false;
