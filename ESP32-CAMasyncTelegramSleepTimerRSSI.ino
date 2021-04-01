@@ -38,10 +38,10 @@ fs::FS &filesystem = FFat;     // Is necessary select the proper partition schem
 #include <AsyncTelegram.h>
 AsyncTelegram myBot;
 
-const char* ssid = "Reis";             // REPLACE mySSID WITH YOUR WIFI SSID
-const char* pass = "8447E21E95";          // REPLACE myPassword YOUR WIFI PASSWORD, IF ANY
-const char* token = "1673269326:AAG8PzS4LsGKo56kebkkETQYPaPR1-P3Ong";     // REPLACE myToken WITH YOUR TELEGRAM BOT TOKEN
-uint32_t chatID = 789512150;
+const char* ssid = "00000";             // REPLACE mySSID WITH YOUR WIFI SSID
+const char* pass = "00000";          // REPLACE myPassword YOUR WIFI PASSWORD, IF ANY
+const char* token = "00000";     // REPLACE myToken WITH YOUR TELEGRAM BOT TOKEN
+uint32_t chatID = 00000;
 
 int max_retry_count = 4; // counter for frame buffer capture
 int counter = 0; // counter for wifi connect
@@ -118,12 +118,6 @@ String takePicture(fs::FS &fs) {
   }
 
   // Take Picture with Camera
-
-  // This might not have to be done this way
-  //  camera_fb_t * fb = NULL;
-  // delay(5000); // 5000 ms delay helps sensor stabilize & prevented poor colors and overexposed photos
-  //  fb = esp_camera_fb_get();
-
   camera_fb_t * fb = esp_camera_fb_get();
   int retries = 0; // if capture fails, retry a number of times before rebooting
   if (!fb)
@@ -260,21 +254,21 @@ void setup() {
   configTime(3600, 3600, "pool.ntp.org");
   getLocalTime(&timeinfo);
   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-
+  
   // Send RSSI
-  //	TBMessage msg;
-  //	msg.chatId = chatID;
-  //	long rssi = 0;
-  //	long averageRSSI = 0;
-  //	for (int i = 0; i < 5; i++) {
-  //		rssi += WiFi.RSSI();
-  //		delay(20);
-  //	}
-  //	averageRSSI = rssi / 5;
-  //	String  message_rssi = String(averageRSSI);
-  //	myBot.sendMessage(msg, message_rssi);
-  //
-  //	delay(1000); // some time between messages, might not be needed
+  	TBMessage msg;
+  	msg.chatId = chatID;
+  	long rssi = 0;
+  	long averageRSSI = 0;
+  	for (int i = 0; i < 5; i++) {
+  		rssi += WiFi.RSSI();
+  		delay(20);
+  	}
+  	averageRSSI = rssi / 5;
+  	String  message_rssi = String(averageRSSI);
+  	myBot.sendMessage(msg, message_rssi);
+  
+  	delay(1000); 
 
   // Take picture and send it
   String myFile = takePicture(filesystem);
@@ -287,7 +281,7 @@ void setup() {
     }
   }
 
-  delay(1000); // might not be needed
+  delay(1000); 
 
   // Go to sleep
   esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
