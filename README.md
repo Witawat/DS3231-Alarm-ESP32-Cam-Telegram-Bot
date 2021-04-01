@@ -1,6 +1,7 @@
 # DS3231-Alarm-ESP32-Cam-Telegram-Bot
 Use DS3231 RTC and ESP-32 Camera to send a photo to a Telegram bot when alarm is tripped
 
+https://youtu.be/Bjpfm8ItYG8
 
 This project utilizes the following Arduino libraries:
 
