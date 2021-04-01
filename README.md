@@ -5,6 +5,7 @@ Use DS3231 RTC and ESP-32 Camera to send a photo to a Telegram bot when alarm is
 This project utilizes the following Arduino libraries:
 
 https://github.com/cotestatnt/AsyncTelegram
+https://github.com/cotestatnt/AsyncTelegram/blob/master/REFERENCE.md
 
 https://github.com/adafruit/RTClib
 
