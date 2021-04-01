@@ -5,6 +5,7 @@
   Created:     20/06/2020
   Author:      Tolentino Cotesta <cotestatnt@yahoo.com>
   Description: an example that show how is possible send an image captured from a ESP32-CAM board
+  https://github.com/cotestatnt/AsyncTelegram/blob/master/examples/ESP32-CAM/ESP32-CAM.ino
 */
 
 //                                             WARNING!!!
