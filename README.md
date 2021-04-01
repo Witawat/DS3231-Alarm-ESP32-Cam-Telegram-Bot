@@ -9,6 +9,8 @@ https://github.com/cotestatnt/AsyncTelegram/blob/master/REFERENCE.md
 
 https://github.com/adafruit/RTClib
 
+(ESP32-CAMasyncTelegramSleepTimerRSSI.ino uses esp32 deep sleep only, no ds3231)
+
                     3.3V
                      +
                      |
