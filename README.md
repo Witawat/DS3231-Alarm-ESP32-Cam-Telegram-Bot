@@ -1,6 +1,7 @@
 # DS3231-Alarm-ESP32-Cam-Telegram-Bot
 Use DS3231 RTC and ESP-32 Camera to send a photo to a Telegram bot when alarm is tripped
-Power ON > send photo and message > alarm is set for the next power ON > alarm is enabled > Power becomes OFF
+
+**Power ON > send photo and message > alarm is set for the next power ON > alarm is enabled > Power becomes OFF**
 
 https://youtu.be/Bjpfm8ItYG8 (timelapse done with virtualdub using photos exported from Telegram Desktop)
 
