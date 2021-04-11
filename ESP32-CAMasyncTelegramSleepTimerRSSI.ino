@@ -118,8 +118,11 @@ String takePicture(fs::FS &fs) {
     return "";
   }
 
-  // Take Picture with Camera
-  camera_fb_t * fb = esp_camera_fb_get();
+	// Take Picture with Camera
+
+	camera_fb_t * fb = NULL;
+	delay(2000); // 2000 ms delay helps sensor stabilize & prevented poor colors and overexposed photos
+	fb = esp_camera_fb_get();
   int retries = 0; // if capture fails, retry a number of times before rebooting
   if (!fb)
     while (1) {
