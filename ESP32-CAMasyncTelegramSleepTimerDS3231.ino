@@ -13,8 +13,7 @@
 /*
     ESP32-Cam captures a photo and sends it to Telegram everytime the DS3231 alarm is tripped.
 
-    https://garrysblog.com/2020/07/05/using-the-ds3231-real-time-clock-alarm-with-the-adafruit-rtclib-library/
-
+    https://garrysblog.com/2020/07/05/using-te-ds3231-real-time-clock-alarm-with-the-adafruit-rtclib-library/
     Energy is save by turning power ON to the ESP32Cam using a P-Channel Mosfet and removing components from the DS3231 board,
     namely both resistor blocks and eeprom chip, and cutting VCC pin (2). The DS3231 pulls 3uA from it's own battery when the ESP32 is off.
 
@@ -170,12 +169,11 @@ String takePicture(fs::FS &fs) {
 
 	// Take Picture with Camera
 
-	// This might not have to be done this way
-	//  camera_fb_t * fb = NULL;
-	// delay(5000); // 5000 ms delay helps sensor stabilize & prevented poor colors and overexposed photos
-	//  fb = esp_camera_fb_get();
+	camera_fb_t * fb = NULL;
+	delay(2000); // 2000 ms delay helps sensor stabilize & prevented poor colors and overexposed photos
+	fb = esp_camera_fb_get();
 
-	camera_fb_t * fb = esp_camera_fb_get();
+	
 	int retries = 0; // if capture fails, retry a number of times before rebooting
 	if (!fb)
 		while (1) {
