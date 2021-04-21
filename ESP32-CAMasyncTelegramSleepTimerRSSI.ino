@@ -1,18 +1,11 @@
-// Based on:
-
 /*
-  Name:        ESP32-CAM.ino
-  Created:     20/06/2020
-  Author:      Tolentino Cotesta <cotestatnt@yahoo.com>
-  Description: an example that show how is possible send an image captured from a ESP32-CAM board
-  https://github.com/cotestatnt/AsyncTelegram/blob/master/examples/ESP32-CAM/ESP32-CAM.ino
+  Based on:    ESP32-CAM.ino by Tolentino Cotesta <cotestatnt@yahoo.com> 20/06/2020
+  Description: wake up, send message with RSSI value and photo to Telegram, sleep.
 */
 
 //                                             WARNING!!!
 // Make sure that you have selected ESP32 Wrover Module, or another board which has PSRAM enabled
 // and Partition Schema: "Default 4MB with ffat..."
-
-// Wake up, config camera and wifi, send text with rssi and photo to telegram, go back to sleep for a user-defined period
 
 #include "esp_camera.h"
 
@@ -21,34 +14,27 @@
 
 // Define where store images (on board SD card reader or internal flash memory)
 // #define USE_MMC true
-#ifdef USE_MMC
-#include <SD_MMC.h>           // Use onboard SD Card reader
-fs::FS &filesystem = SD_MMC;
-#else
 #include <FFat.h>              // Use internal flash memory
 fs::FS &filesystem = FFat;     // Is necessary select the proper partition scheme (ex. "Default 4MB with ffta..")
-#endif
 
 // You only need to format FFat when error on mount (don't work with MMC SD card)
 #define FORMAT_FS_IF_FAILED true
 #define FILENAME_SIZE 20
 #define KEEP_IMAGE false
 
-#include <Arduino.h>
 #include <WiFi.h>
 #include <AsyncTelegram.h>
 AsyncTelegram myBot;
 
-const char* ssid = "00000";             // REPLACE mySSID WITH YOUR WIFI SSID
-const char* pass = "00000";          // REPLACE myPassword YOUR WIFI PASSWORD, IF ANY
-const char* token = "00000";     // REPLACE myToken WITH YOUR TELEGRAM BOT TOKEN
-uint32_t chatID = 00000;
-
-int max_retry_count = 4; // counter for frame buffer capture
-int counter = 0; // counter for wifi connect
+const char* ssid = "Reis";             // REPLACE mySSID WITH YOUR WIFI SSID
+const char* pass = "8447E21E95";          // REPLACE myPassword YOUR WIFI PASSWORD, IF ANY
+const char* token = "1558922737:AAEgWVlWSTQ5XZm_8yt9iJP2JHwm47usfC0";     // REPLACE myToken WITH YOUR TELEGRAM BOT TOKEN
+int max_retry_count = 4; // attempts to grab photo
+int counter = 0;
+uint32_t chatID = 789512150;
 
 #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
-#define TIME_TO_SLEEP  120        /* Time ESP32 will go to sleep (in seconds) */
+#define TIME_TO_SLEEP  2*60        /* Time ESP32 will go to sleep (in seconds) */
 
 // Pin definition for CAMERA_MODEL_AI_THINKER
 #define PWDN_GPIO_NUM     32
@@ -71,7 +57,6 @@ int counter = 0; // counter for wifi connect
 
 // Struct for saving time datas (needed for time-naming the image files)
 struct tm timeinfo;
-
 
 // List all files saved in the selected filesystem
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels) {
@@ -118,20 +103,19 @@ String takePicture(fs::FS &fs) {
     return "";
   }
 
-	// Take Picture with Camera
-
-	camera_fb_t * fb = NULL;
-	delay(2000); // 2000 ms delay helps sensor stabilize & prevented poor colors and overexposed photos
-	fb = esp_camera_fb_get();
+  // Take Picture with Camera
+  camera_fb_t * fb = NULL;
+  delay(1000); // 2000 ms delay helps sensor stabilize & prevented poor colors and overexposed photos
+  fb = esp_camera_fb_get();
   int retries = 0; // if capture fails, retry a number of times before rebooting
   if (!fb)
     while (1) {
       Serial.println("Not having image yet, waiting a bit");
       fb = esp_camera_fb_get();
       if (fb) break;
+
       retries++;
-      if (retries > max_retry_count)ESP.restart();
-      delay(500);
+      if (retries > max_retry_count) ESP.restart();
     }
 
   // Save picture to memory
@@ -149,11 +133,12 @@ String takePicture(fs::FS &fs) {
 }
 
 void setup() {
+  WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
+  // FFat.format(); // for troubleshooting
 
   Serial.begin(115200);
   Serial.setDebugOutput(true);
   Serial.println();
-  // FFat.format(); // Format internal flash memory if there is something wrong with photo storage
 
   // cameraSetup
   camera_config_t config;
@@ -195,7 +180,8 @@ void setup() {
   if (err != ESP_OK) {
     Serial.printf("Camera init failed with error 0x%x", err);
     delay(1000);
-    ESP.restart();
+	//ESP.restart();
+    return; // continue with application, still try to send RSSI value without photo
   }
 
   sensor_t * s = esp_camera_sensor_get();
@@ -231,14 +217,14 @@ void setup() {
     delay(500);
     Serial.print(".");
     counter++;
-    if (counter >= 60) { //after 30 seconds timeout - reset board (on unsucessful connection)
+    if (counter >= 60) { //after 30 seconds timeout - reset board
       ESP.restart();
     }
   }
   Serial.print("\nWiFi connected: ");
   Serial.print(WiFi.localIP());
 
-  // Init filesystem (format if necessary)
+  // Init filesystem
   if (!FFat.begin(FORMAT_FS_IF_FAILED))
     Serial.println("\nFS Mount Failed.\nFilesystem will be formatted, please wait.");
   Serial.printf("\nTotal space: %10lu\n", FFat.totalBytes());
@@ -258,21 +244,21 @@ void setup() {
   configTime(3600, 3600, "pool.ntp.org");
   getLocalTime(&timeinfo);
   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-  
+
   // Send RSSI
-  	TBMessage msg;
-  	msg.chatId = chatID;
-  	long rssi = 0;
-  	long averageRSSI = 0;
-  	for (int i = 0; i < 5; i++) {
-  		rssi += WiFi.RSSI();
-  		delay(20);
-  	}
-  	averageRSSI = rssi / 5;
-  	String  message_rssi = String(averageRSSI);
-  	myBot.sendMessage(msg, message_rssi);
-  
-  	delay(1000); 
+  TBMessage msg;
+  msg.chatId = chatID;
+  long rssi = 0;
+  long averageRSSI = 0;
+  for (int i = 0; i < 5; i++) {
+    rssi += WiFi.RSSI();
+    delay(20);
+  }
+  averageRSSI = rssi / 5;
+  String  message_rssi = String(averageRSSI);
+  myBot.sendMessage(msg, message_rssi);
+
+  delay(2000); // wait before sending another message (the photo)
 
   // Take picture and send it
   String myFile = takePicture(filesystem);
@@ -285,14 +271,12 @@ void setup() {
     }
   }
 
-  delay(1000); 
+  delay(1000); // give time for the photo to arrive, superstition.
 
   // Go to sleep
   esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
-  Serial.println("Setup ESP32 to sleep for every " + String(TIME_TO_SLEEP) +
-                 " Seconds");
-  Serial.print("Going to sleep now:");
-  Serial.println(millis());
+    Serial.println("Setup ESP32 to sleep for every " + String(TIME_TO_SLEEP) + " Seconds");
+  Serial.print("Going to sleep now: "); Serial.println(millis());
   Serial.flush();
   esp_deep_sleep_start();
   Serial.println("This will never be printed");
