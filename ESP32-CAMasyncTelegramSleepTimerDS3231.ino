@@ -1,21 +1,27 @@
-/*
-  Based on original work by
-  Name:        ESP32-CAM.ino
-  Created:     20/06/2020
-  Author:      Tolentino Cotesta <cotestatnt@yahoo.com>
-  Description: an example that show how is possible send an image captured from a ESP32-CAM board
+/* 
+	Libraries:
+	https://github.com/cotestatnt/asynctelegram
+	https://github.com/adafruit/RTClib
+
+	Select ESP32 Wrover Module, or another board which has PSRAM enabled
+	Partition Scheme: "Default 4MB with ffat..." 
 */
 
-//                                             WARNING!!!
-// Make sure that you have selected ESP32 Wrover Module, or another board which has PSRAM enabled
-// and Partition Schema: "Default 4MB with ffat..."
-
 /*
-    ESP32-Cam captures a photo and sends it to Telegram everytime the DS3231 alarm is tripped.
+    Captures a photo and sends it to Telegram everytime the DS3231 alarm is tripped.
 
-    https://garrysblog.com/2020/07/05/using-te-ds3231-real-time-clock-alarm-with-the-adafruit-rtclib-library/
-    Energy is save by turning power ON to the ESP32Cam using a P-Channel Mosfet and removing components from the DS3231 board,
-    namely both resistor blocks and eeprom chip, and cutting VCC pin (2). The DS3231 pulls 3uA from it's own battery when the ESP32 is off.
+	SQW pin on the DS3231 goes LOW when alarm is tripped, this closes the P-Channel Mosfet, ESP32Cam is then powered until a new alarm time is set in the end of the routine.
+
+
+	Setting alarms on the DS3231:
+    https://garrysblog.com/2020/07/05/using-the-ds3231-real-time-clock-alarm-with-the-adafruit-rtclib-library/
+
+    Energy can be saved by removing components from the DS3231 board, namely both resistor blocks and eeprom chip, and cutting VCC pin (2). 
+	The DS3231 chip pulls 3uA from it's own battery when the ESP32 is off.
+    
+	Lowpower with DS3231:
+    https://thecavepearlproject.org/read-the-blog/ (ds3231 mod pictures)
+    https://sites.google.com/site/wayneholder/low-power-techniques-for-arduino
 
     Place 10K pullups on GPIO14 (SCL) and GPIO15 (SDA) for stability.
 
@@ -57,14 +63,6 @@
     Everything ESP32-CAM:
     https://RandomNerdTutorials.com/telegram-esp32-cam-photo-arduino/
     https://github.com/robotzero1
-
-    lowpower with DS3231:
-    https://thecavepearlproject.org/read-the-blog/ (ds3231 mod pictures)
-    https://sites.google.com/site/wayneholder/low-power-techniques-for-arduino
-
-    Libraries:
-    https://github.com/cotestatnt/asynctelegram
-    https://github.com/adafruit/RTClib
 
     IMPORTANT!!!
     - Use a power supply capable of delivering close to 500mA current. Choose voltage regulator carefully
