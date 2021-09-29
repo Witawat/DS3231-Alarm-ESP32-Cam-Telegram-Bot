@@ -26,12 +26,12 @@ fs::FS &filesystem = FFat;     // Is necessary select the proper partition schem
 #include <AsyncTelegram.h>
 AsyncTelegram myBot;
 
-const char* ssid = "Reis";             // REPLACE mySSID WITH YOUR WIFI SSID
-const char* pass = "8447E21E95";          // REPLACE myPassword YOUR WIFI PASSWORD, IF ANY
-const char* token = "1558922737:AAEgWVlWSTQ5XZm_8yt9iJP2JHwm47usfC0";     // REPLACE myToken WITH YOUR TELEGRAM BOT TOKEN
+const char* ssid = "xxxx";             // REPLACE mySSID WITH YOUR WIFI SSID
+const char* pass = "xxxxx";          // REPLACE myPassword YOUR WIFI PASSWORD, IF ANY
+const char* token = "xxxxxx";     // REPLACE myToken WITH YOUR TELEGRAM BOT TOKEN
 int max_retry_count = 4; // attempts to grab photo
 int counter = 0;
-uint32_t chatID = 789512150;
+uint32_t chatID = xxxxxx;
 
 #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 #define TIME_TO_SLEEP  2*60        /* Time ESP32 will go to sleep (in seconds) */
