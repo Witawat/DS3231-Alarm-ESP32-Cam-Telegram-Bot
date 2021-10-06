@@ -93,12 +93,12 @@ fs::FS &filesystem = FFat;     // Is necessary select the proper partition schem
 #include <AsyncTelegram.h>
 AsyncTelegram myBot;
 
-const char* ssid = "WR841";             // REPLACE mySSID WITH YOUR WIFI SSID
-const char* pass = "kikadela";          // REPLACE myPassword YOUR WIFI PASSWORD, IF ANY
-const char* token = "1558922737:AAEgWVlWSTQ5XZm_8yt9iJP2JHwm47usfC0";     // REPLACE myToken WITH YOUR TELEGRAM BOT TOKEN
+const char* ssid = "000000";             // REPLACE mySSID WITH YOUR WIFI SSID
+const char* pass = "000000";          // REPLACE myPassword YOUR WIFI PASSWORD, IF ANY
+const char* token = "000000";     // REPLACE myToken WITH YOUR TELEGRAM BOT TOKEN
 int max_retry_count = 4;
 int counter = 0;
-uint32_t chatID = 789512150;
+uint32_t chatID = 000000;
 // Pin definition for CAMERA_MODEL_AI_THINKER
 #define PWDN_GPIO_NUM     32
 #define RESET_GPIO_NUM    -1
