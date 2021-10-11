@@ -70,14 +70,14 @@ SSLClient client(base_client, TAs, (size_t)TAs_NUM, A0);
 WiFiClientSecure client;
 #endif
 
-const char* ssid = "Reis";  // SSID WiFi network
-const char* pass = "8447E21E95";  // Password  WiFi network
-const char* token = "1558922737:AAEgWVlWSTQ5XZm_8yt9iJP2JHwm47usfC0";
+const char* ssid = "0000000";  // SSID WiFi network
+const char* pass = "0000000";  // Password  WiFi network
+const char* token = "0000000";
 int max_retry_count = 4;
 int counter = 0;
 // Check the userid with the help of bot @JsonDumpBot or @getidsbot (work also with groups)
 // https://t.me/JsonDumpBot  or  https://t.me/getidsbot
-int64_t userid = 789512150;
+int64_t userid = 0000000;
 
 // Timezone definition to get properly time from NTP server
 #define MYTZ "WET0WEST,M3.5.0/1,M10.5.0"
