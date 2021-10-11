@@ -3,7 +3,7 @@ DS3231 RTC wakes up ESP-32Cam periodically and a photo is sent to a Telegram bot
 
 **Power ON > send photo and/or message > alarm is set for the next power ON > alarm is enabled > Power turned OFF**
 
-https://youtu.be/Bjpfm8ItYG8 (timelapse done with virtualdub using photos exported from Telegram Desktop)
+https://www.youtube.com/watch?v=TPH_MbMufHI (timelapse done with virtualdub using photos exported from Telegram Desktop)
 
 This project utilizes the following Arduino libraries:
 
